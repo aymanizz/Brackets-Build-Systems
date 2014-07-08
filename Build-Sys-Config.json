@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Haxe",
+    "dir": "$PROJECT_ROOT",
+    "cmd": "haxe build.hxml",
+    "Rcmd": "start $PROJECT_NAME.n",
+    "shortcut": ""
+  },
+  {
+    "name": "Lime Flash",
+    "dir": "$PROJECT_ROOT",
+    "cmd": "lime build flash",
+    "Dcmd": "lime build flash -debug",
+    "Rcmd": "start $PROJECT_ROOT/$PROJECT_NAME/$FULL_FILE_NAME/$FILE_NAME.swf",
+    "shortcut": ""
+  },
+  {
+    "name": "Lime Neko",
+    "dir": "$PROJECT_ROOT",
+    "cmd": "lime build neko",
+    "Dcmd": "lime build neko -debug",
+    "shortcut": ""
+  },
+  {
+    "name": "Lime C++",
+    "dir": "$PROJECT_ROOT",
+    "cmd": "lime build cpp",
+    "Dcmd": "lime build neko -debug",
+    "shortcut": ""
+  },
+  {
+    "name": "Build",
+    "cmd": "__build__",
+    "shortcut": "F9"
+  },
+  {
+    "name": "Run",
+    "cmd": "__run__",
+    "shortcut": "F10"
+  }
+]
