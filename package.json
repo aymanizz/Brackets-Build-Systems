@@ -4,7 +4,7 @@
     "description": "Allows to execute commands via keyboard shortcuts & menu items to build programmes written in any programming language or even just to run a command. Made possible thanks to Anton Ivanov the creator of Command Line Shortcuts Extension.",
     "homepage": "https://github.com/aymanizz/Brackets-Build-System",
     "version": "0.0.1",
-    "author": "Ayman Izzedlin <ayman.izzeldin@gmail.com> (https://github.com/aymanizz)",
+    "author": "Ayman Izzeldin <ayman.izzeldin@gmail.com> (https://github.com/aymanizz)",
     "contributors": [
     ],
     "license": "MIT",
