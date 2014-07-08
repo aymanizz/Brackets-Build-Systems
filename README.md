@@ -81,11 +81,11 @@ The extension has been tested on Windows 7, but should work on any platform or s
 
 ## Report Issues
 
-Issues can be reported at [https://github.com/aymanizz/Brackets-Build-Systems/issues](https://github.com/aymanizz/Brackets-Build-Systems/issues)
+Issues can be reported at [https://github.com/aymanizz/Brackets-Build-Systems/issues](https://github.com/aymanizz/Brackets-Build-System/issues)
 
 ## License
 
-MIT License. see [LICENSE](https://github.com/aymanizz/Brackets-Build-Systems/LICENSE) for more details.
+MIT License. see [LICENSE](https://github.com/aymanizz/Brackets-Build-System/LICENSE) for more details.
 
 ## Credits
 
