@@ -75,9 +75,11 @@ The extension has been tested on Windows 7, but should work on any platform or s
 
 ## Future Plans
 
-1. Parse the output in panel to display line, massage, and file in which the error occured, and make it clickable (like in replace panel).
-2. Make editing configurations easier through a model dialog with add, edit and remove options.
-3. Show more info in status's title (errors and warnings counter -- related to first point).
+1. Add Build and Run menu item.
+2. Parse the output in panel to display line, massage, and file in which the error occured, and make it clickable (like in replace panel).
+3. Make editing configurations easier through a model dialog with add, edit and remove options.
+4. Show more info in status's title (errors and warnings counter -- related to first point).
+5. Add Automatic entry (based on opened file).
 
 ## Report Issues
 
