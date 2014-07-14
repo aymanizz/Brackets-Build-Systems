@@ -1,4 +1,4 @@
-# ***Brackets Builder Extension***
+# ***Brackets Build Systems Extension***
 
 Brackets IDE extension. Adds support of keyboard shortcuts and menu items for execution of terminal commands right from the IDE.
 
