@@ -29,31 +29,32 @@
 define({
     // Extension
     "EXTENSION_NAME"    :   "Brackets Build System",
-    "EXTENSION_PREFS"    :   "ai.brackets-build-system",
+    "EXTENSION_PREFS"   :   "ai.brackets-build-system",
   
     // General
     "DOMAIN_NAME"       :   "extension.commandline.node",
     
     // Build Menu
+    "Auto"              :   "Automatic",
     "BUILD"             :   "Build",
     "RUN"               :   "Run",
     "BUILD_RUN"         :   "Build and Run",
     "DEBUG_MODE"        :   "Debug Mode",
     "AUTO_CLEAR"        :   "Auto Clear",
+    "SAVE_ON_BUILD"     :   "Save All on Build",
     "SHOW_PANEL"        :   "Show Results",
     "CONFIG"            :   "Configuration...",
     "SETTINGS"          :   "Settings...",
     
     // Build Panel
     "CLEAR"             :   "Clear",
-    "NO_RUN_CMD"        :   "No run command available",
-    "NO_BUILD_CMD"      :   "No build command available",
   
     // Configuration Dialog
     "CONFIG_MSG"        :   "You must restart Brackets after changing this file.",
     
     // Status
     "INACTIVE"          :   "Inactive",
+    "INACTIVE_MSG"      :   "No Build",
     "PROGRESS"          :   "Progressing",
     // Complete status
     "NO_OUTPUT"         :   "Finished",
@@ -63,11 +64,13 @@ define({
     // ID's
     "BASIC_ID"          :   "extension.brackets-builder",
     "MENU_ID"           :   "extension.brackets-builder.menu.id",
+    "AUTO_ID"           :   "extension.brackets-builder.run.auto",
     "BUILD_ID"          :   "extension.brackets-builder.run.build",
     "RUN_ID"            :   "extension.brackets-builder.run.runCmd",
-    "BUILD_RUN_ID"      :   "",
+    "BUILD_RUN_ID"      :   "extension.brackets-builder.run.build-runCmd",
     "DEBUG_MODE_ID"     :   "extension.brackets-builder.menu.debug.id",
     "AUTO_CLEAR_ID"     :   "extension.brackets-builder.panel.clear.id",
+    "SAVE_ON_BUILD_ID"  :   "extension.brackets-builder.menu.save.id",
     "SHOW_PANEL_ID"     :   "extension.brackets-builder.panel.show.id",
     "CONFIG_ID"         :   "extension.brackets-builder.configure.id",
     "SETTINGS_ID"       :   "",

@@ -23,162 +23,190 @@
  */
 
 define(function (require, exports, module) {
-  var ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
-  var PreferencesManager = brackets.getModule("preferences/PreferencesManager");
-  var CommandManager = brackets.getModule("command/CommandManager");
-  var Menus = brackets.getModule("command/Menus");
+	var ExtensionUtils 		= brackets.getModule("utils/ExtensionUtils"),
+		PreferencesManager 	= brackets.getModule("preferences/PreferencesManager"),
+		CommandManager 		= brackets.getModule("command/CommandManager"),
+		Menus				= brackets.getModule("command/Menus");
 
-  var InfoPanel = require("./InfoPanel").InfoPanel;
-  var Configuration = require("./Configuration").Configuration;
-  var RunManager = require("./RunManager").RunManager;
-  var Util = require("./Util").Util;
-  var CommandLine = require("./CommandLine").CommandLine;
-  var ExtensionStrings = require("Strings");
+	var InfoPanel 			= require("modules/InfoPanel").InfoPanel,
+		Configuration 		= require("modules/Configuration").Configuration,
+		RunManager 			= require("modules/RunManager").RunManager,
+		Util 				= require("modules/Util").Util,
+		CommandLine 		= require("modules/CommandLine").CommandLine,
+		ExtensionStrings 	= require("modules/Strings");
+
+	var preferences 		= PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS),
+		menu 				= Menus.getMenu(ExtensionStrings.MENU_ID),
+		lastEntry 			= preferences.get('lastEntry'),
+		panel 				= new InfoPanel(),
+		configuration 		= new Configuration(),
+		commandLine 		= new CommandLine(),
+		runManager	 		= new RunManager(panel),
+		msgs				= "";
 	
-  var preferences = PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS);
-  
-  $("#status-language").before('<div class="' + ExtensionStrings.INACTIVE + '" id="brackets-build-sys-status" title="Build System Status">No Build</div>');
-  
-  $status = $('#brackets-build-sys-status');
-  
-  preferences.definePreference('showPanel', 'boolean', false);
-  preferences.definePreference('lastEntry', 'object', []);
-  
-  var panel = new InfoPanel();
-  panel.init();
+	preferences.definePreference('showPanel', 'boolean', false);
+	preferences.definePreference('lastEntry', 'object', []);
+	preferences.definePreference('clear', 'boolean', false);
+	preferences.definePreference('debug', 'boolean', false);
+	preferences.definePreference('save', 'boolean', false);
 
-  var configuration = new Configuration();
+	CommandManager.register(ExtensionStrings.BUILD, ExtensionStrings.BUILD_ID, _build);
+	CommandManager.register(ExtensionStrings.RUN, ExtensionStrings.RUN_ID, _run);
 
-  var commandLine = new CommandLine();
-  commandLine.init();
+	panel.init();
+	commandLine.init();
 
-  var runManager = new RunManager(panel);
-  
-  var menu = Menus.getMenu (ExtensionStrings.MENU_ID);
-  
-  var lastEntry = preferences.get('lastEntry');
-  
-  CommandManager.register("Show Panel", ExtensionStrings.SHOW_PANEL_ID, _togglePanel);
-  
-  if (preferences.get("showPanel") === true)
-  {
-    CommandManager.get(ExtensionStrings.SHOW_PANEL_ID).setChecked(true);
-    panel.show();
-  }
-  
-  function _togglePanel ()
-  {
-    var isShown = preferences.get('showPanel');
-    
-    if (isShown)
-    {
-     panel.hide();
-    }
-    else
-     panel.show();
-  }
-  
-  function _updateStatus (newClass)
-  {
-    $status.attr("class", newClass);
-    if (newClass == "Inactive")
-      $status.text("No Build");
-    else $status.text(newClass);
-  }
+	function appendData(data) {
+		var data_arr = data.split(lastEntry.seperator ? lastEntry.seperator : /(?:\r\n|\n)/g);
+		
+		$(panel.status).attr("title", "Build System Status: " 
+					+ data_arr.length 
+					+ " Output(s)");
+		
+		for (var i = 0; i < data_arr.length; i++) {
+				panel.appendOutput(data_arr[i]);
+		}
+	}
 
-  commandLine.addListeners({
-    "progress": function(event, data) {
-      panel.appendText("<tr style='display:table-row'><td>" + Util.encodeSpecialCharacters(data.trim()));
-      _updateStatus(ExtensionStrings.WARNING);
-    },
-    "error": function(event, data) {
-      panel.appendText("<tr style='display:table-row'><td>" + data);
-      _updateStatus(ExtensionStrings.ERROR);
-    },
-    "finished": function(event) {
-      panel.appendText("</td></tr>");
-      if (!($status.hasClass(ExtensionStrings.WARNING) || $status.hasClass(ExtensionStrings.ERROR)))
-        _updateStatus(ExtensionStrings.NO_OUTPUT);
-      commandLine.closeConnection();
-      runManager.finish();
-    }
-  });
+	commandLine.addListeners({
+		"progress": function(event, data) {
+			msgs += data;
+			panel.updateStatus(ExtensionStrings.NO_OUTPUT);
+			panel.show();
+		},
+		"error": function(event, data) {
+			msgs += data;
+			panel.updateStatus(ExtensionStrings.ERROR);
+			panel.show();
+		},
+		"finished": function(event) {
+			if (!msgs) {
+				panel.updateStatus(ExtensionStrings.NO_OUTPUT);
+				panel.appendOutput("No Output");
+			} else {
+				msgs = msgs.trimRight();
+				appendData(msgs);
+			}
+			
+			msgs = "";
+			commandLine.closeConnection();
+			runManager.finish();
+		}
+	});
 
-  configuration.read(function(entry) {
-    if (entry.cmd == "__build__" || entry.cmd == "__run__") return function() {
-      var clear = CommandManager.get(ExtensionStrings.AUTO_CLEAR_ID).getChecked();
-      var debug = CommandManager.get(ExtensionStrings.DEBUG_MODE_ID).getChecked();
-      var cmd = "";
-      var dir = "";
-      
-      if (lastEntry === [])
-        return;
-      
-      if (entry.cmd == "__run__")
-      {
-		    if (lastEntry.Rcmd !== undefined)
-          cmd = configuration.replaceVarsOf(lastEntry.Rcmd);
-        else
-        {
-          cmd = "";
-          if (clear) panel.clear();
-          panel.show();
-          CommandManager.get(ExtensionStrings.SHOW_PANEL_ID).setChecked(true);
-          panel.appendText("<tr><td>" + ExtensionStrings.NO_RUN_CMD + "</tr></td>");
-        }
-		  }
-      
-      else if (debug === true && lastEntry.Dcmd !== undefined)
-        cmd = configuration.replaceVarsOf(lastEntry.Dcmd);
-      
-			else if (lastEntry.cmd !== undefined)
-        cmd = configuration.replaceVarsOf(lastEntry.cmd);
-      
-      else
-        {
-          cmd = "";
-          if (clear) panel.clear();
-          panel.show();
-          CommandManager.get(ExtensionStrings.SHOW_PANEL_ID).setChecked(true);
-          panel.appendText("<tr><td>" + ExtensionStrings.NO_BUILD_CMD + "</tr></td>");
-        }
-        
-      if (cmd !== "")
-      {
-        dir = configuration.replaceVarsOf(lastEntry.dir);
-        
-        runManager.start(lastEntry, function() {
-          commandLine.run(dir, cmd, function onStart() {
-            if (clear) panel.clear();
-            panel.show();
-            CommandManager.get(ExtensionStrings.SHOW_PANEL_ID).setChecked(true);
-            _updateStatus(ExtensionStrings.PROGRESS);
-            panel.appendText('<tr class="file-section"><td><span class="dialog-filename">' + cmd + '</span> — in <span class="dialog-path">' + dir + '</span></td></tr>');
-          });
-        });
-      }
-    };
-    
-    else return function() {
-      if (lastEntry.id !== undefined)
-        CommandManager.get(ExtensionStrings.BASIC_ID + ".run." + lastEntry.id).setChecked(false);
-      
-      preferences.set('lastEntry', entry);
-      preferences.save();
-      CommandManager.get(ExtensionStrings.BASIC_ID + ".run." + entry.id).setChecked(true);
-      panel.setTitle(entry.name);
-    };
-  });
-  
-  if (lastEntry.id !== undefined)
-  {
-    CommandManager.get(ExtensionStrings.BASIC_ID + '.run.' + lastEntry.id).setChecked(true);
-    panel.setTitle(lastEntry.name);
-  }
-  
-  $status.on('click', function () {
-    _togglePanel();
-  });
-  
-  ExtensionUtils.loadStyleSheet(module, "output-panel.css");
+	configuration.read(function(entry) {
+		return function() {
+			lastEntry = preferences.get('lastEntry');
+
+			if (lastEntry.id) {
+				CommandManager.get(ExtensionStrings.BASIC_ID + ".run." + lastEntry.id).setChecked(false);
+			}
+			
+			preferences.set('lastEntry', entry);
+			lastEntry = preferences.get('lastEntry');
+			preferences.save();
+			CommandManager.get(ExtensionStrings.BASIC_ID + ".run." + entry.id).setChecked(true);
+			panel.setTitle(entry.name);
+			
+			if (!lastEntry.cmd) {
+				CommandManager.get(ExtensionStrings.BUILD_ID).setEnabled(false);
+			} else {
+				CommandManager.get(ExtensionStrings.BUILD_ID).setEnabled(true);				
+			}
+			
+			if (!lastEntry.Rcmd) {
+				CommandManager.get(ExtensionStrings.RUN_ID).setEnabled(false);
+			} else {
+				CommandManager.get(ExtensionStrings.RUN_ID).setEnabled(true);				
+			}
+			
+			if (!lastEntry.Dcmd) {
+				CommandManager.get(ExtensionStrings.DEBUG_MODE_ID).setEnabled(false);
+			} else {
+				CommandManager.get(ExtensionStrings.DEBUG_MODE_ID).setEnabled(true);				
+			}
+		};
+	});
+
+	/*  Menu Build and Run Entries  */
+	
+	function _build () {
+		var debug = CommandManager.get(ExtensionStrings.DEBUG_MODE_ID).getEnabled() 
+					&& CommandManager.get(ExtensionStrings.DEBUG_MODE_ID).getChecked();
+		
+		if (!lastEntry) {
+			return;
+		} else if (debug) {
+			var cmd = configuration.replaceConsts(lastEntry.Dcmd);
+		} else {
+			var cmd = configuration.replaceConsts(lastEntry.cmd);
+		}
+		
+		var	clear = CommandManager.get(ExtensionStrings.AUTO_CLEAR_ID).getChecked(),
+			save = CommandManager.get(ExtensionStrings.SAVE_ON_BUILD_ID).getChecked(),
+			dir = configuration.replaceConsts(lastEntry.dir);
+		
+		runManager.start(lastEntry, function() {
+			commandLine.run(dir, cmd, function onStart() {
+				clear && panel.clear();
+				save && CommandManager.execute("file.saveAll");
+				panel.updateStatus(ExtensionStrings.PROGRESS);
+				panel.appendText('<tr class="file-section selected"><td colspan="3"><span class="dialog-filename">' 
+					+ cmd
+					+ '</span> — in <span class="dialog-path" data-path="'
+					+ dir
+					+ '">'
+					+ dir
+					+ '</span></td></tr>');
+			});
+		});
+	}
+
+	function _run () {
+		if (!lastEntry) {
+			return;
+		} else {
+			var cmd = configuration.replaceConsts(lastEntry.Rcmd);
+		}
+
+		var clear = CommandManager.get(ExtensionStrings.AUTO_CLEAR_ID).getChecked(),
+			dir = configuration.replaceConsts(lastEntry.dir);
+
+		runManager.start(lastEntry, function() {
+			commandLine.run(dir, cmd, function onStart() {
+				clear && panel.clear();
+				panel.updateStatus(ExtensionStrings.PROGRESS);
+				panel.appendText('<tr class="build-sys-output-header file-section selected" data-path="'
+					+ dir
+					+ '"><td colspan="3"><span class="dialog-filename">' 
+					+ lastEntry.name 
+					+ '</span> — in <span class="dialog-path">'
+					+ dir
+					+ '</span></td></tr>');
+				
+				$(".disclosure-triangle expanded", this.panelContentElement).on('click', function () {
+					
+				});
+			});
+		});
+	}
+
+	menu.addMenuItem (ExtensionStrings.BUILD_ID, "F9", Menus.BEFORE, ExtensionStrings.DEBUG_MODE_ID);
+	menu.addMenuItem (ExtensionStrings.RUN_ID, "F10", Menus.BEFORE, ExtensionStrings.DEBUG_MODE_ID);
+	menu.addMenuDivider(Menus.AFTER, ExtensionStrings.RUN_ID);
+
+	/*  Menu Build and Run Entries  */
+	
+	ExtensionUtils.loadStyleSheet(module, "styles/style.css");
+	
+	if (lastEntry.id) {
+		
+		CommandManager.get(ExtensionStrings.BASIC_ID + '.run.' + lastEntry.id).setChecked(true);
+		CommandManager.get(ExtensionStrings.BASIC_ID + '.run.' + lastEntry.id).execute();
+		panel.setTitle(lastEntry.name);
+	}
+	
+	if (preferences.get("showPanel")) {
+		panel.show();
+	}
 });

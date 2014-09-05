@@ -1,5 +1,17 @@
 [
   {
+    "name": "C++",
+    "dir": "$FILE_PATH",
+    "cmd": "g++ $FULL_FILE_NAME -o $FILE_PATH/$FILE_NAME",
+    "Rcmd": "bash -c g++ '$FULL_FILE_NAME' -o '$FILE_PATH/$FILE_NAME' && '$FILE_PATH/$FILE_NAME'"
+  },
+  {
+    "name": "Python",
+    "dir": "$FILE_PATH",
+    "cmd": "python -u $FULL_FILE_NAME",
+    "seperator": "[ ]*File \/"
+  },
+  {
     "name": "Haxe",
     "dir": "$PROJECT_ROOT",
     "cmd": "haxe build.hxml",
@@ -11,31 +23,7 @@
     "dir": "$PROJECT_ROOT",
     "cmd": "lime build flash",
     "Dcmd": "lime build flash -debug",
-    "Rcmd": "start $PROJECT_ROOT/$PROJECT_NAME/$FULL_FILE_NAME/$FILE_NAME.swf",
+    "Rcmd": "start $PROJECT_ROOT/Export/flash/bin/$PROJECT_NAME.swf",
     "shortcut": ""
-  },
-  {
-    "name": "Lime Neko",
-    "dir": "$PROJECT_ROOT",
-    "cmd": "lime build neko",
-    "Dcmd": "lime build neko -debug",
-    "shortcut": ""
-  },
-  {
-    "name": "Lime C++",
-    "dir": "$PROJECT_ROOT",
-    "cmd": "lime build cpp",
-    "Dcmd": "lime build neko -debug",
-    "shortcut": ""
-  },
-  {
-    "name": "Build",
-    "cmd": "__build__",
-    "shortcut": "F9"
-  },
-  {
-    "name": "Run",
-    "cmd": "__run__",
-    "shortcut": "F10"
   }
 ]

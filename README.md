@@ -1,8 +1,8 @@
-# ***Brackets Build Systems Extension***
+# ***Brackets Build System Extension***
 
 Brackets IDE extension. Adds support of keyboard shortcuts and menu items for execution of terminal commands right from the IDE.
 
-## Configure Shortcuts
+## Configuration
 
 Activate the menu item `Build -> Configuration...` to open the configuration of commands for the extension.
 
@@ -17,6 +17,7 @@ Example configuration
     "Dcmd": "Debug Command",
     "Rcmd": "Run $FILE_NAME.sth",
     "shortcut": "Ctrl-Shift-Alt-N",
+    "seperator": "\n",
     "autohide": true
   }
 ]
@@ -28,16 +29,18 @@ Example configuration
 * `Dcmd` the debug command (which is only executed if the debug mode is activated) executed using the menu item Build (`Build -> Build <F9>`), optional (if not specified the actual command will be executed instead).
 * `Rcmd` the run command which is executed to run the compiled file using the menu item Run (`Build -> Run <F10>`).
 * `shortcut` the keyboard shortcut that will activate the command so make sure it's not already used somewhere else, required.
+* `seperator` regular expression used to seperate output (default - newline), optional.
 * `autohide` whether the feedback panel with the command output should be hidden automatically after a few seconds or not, optional.
 
-* Special Variables : these variables are replaced when the commandd is run by their values, This way when opening multiple projects/files in a sequence the commands will be applicable for each project/file provided. The variables are :-
+* Special Variables : these variables are replaced, when the command is executed, by their values. This way, when opening multiple projects/files in a sequence the commands will be applicable for each project/file provided. The variables are :-
 
   - `$PROJECT_ROOT` represents the root directory of the currently open project.
   - `$PROJECT_NAME` represents the project name (project directory name).
   - `$FULL_FILE_NAME` represents the currently opened file name with it's extension.
   - `$FILE_NAME` represents the currently opened file name without it's extension.
+  - `$FILE_PATH` represents the currently opened file path.
 
-NOTE: required fields if ommited will not produce an error massage, but the extension will not work probably.
+NOTE: required properties if ommited will not produce an error massage.
 
 In order for changes to be applied just reload Brackets.
 
@@ -57,17 +60,17 @@ After re-loading Brackets with the latest version of the configuration just use 
 
 `Ctrl-Shift-Alt-N` will trigger the command.
 
-#### Things to know
+#### Notes
 
-1. if Debug Mode is Enabled (`Build -> Debug Mode <CTRL-F9>`) every time you run a command the executed command is the one stored in `Dcmd` unless it is not specified.
+1. The Build menu item (`Build -> Build <F9>`) will build the triggered command using it's `cmd` (or `Dcmd` if Debug Mode is enabled) property as the command.
 
-2. if Auto Clear is Enabled (`Build -> Auto Clear <CTRL-F10>`) every time you run a command the panel will be cleared before the execution of the command.
+2. The Run menu item (`Build -> Run <F10>`) will run the triggered command using it's `Rcmd` property as the command.
 
-3. The Build menu item (`Build -> Build <F9>`) will build the triggered command using it's `cmd` (or `Dcmd` if Debug Mode is enabled) property as the command.
+3. if Debug Mode is Enabled (`Build -> Debug Mode <CTRL-F9>`) the command stored in `Dcmd` will be used in building, see `Dcmd` for more details.
 
-4. The Run menu item (`Build -> Run <F10>`) will run the triggered command using it's `Rcmd` property as the command.
+4. if Auto Clear is Enabled (`Build -> Auto Clear <CTRL-F10>`) the panel will be cleared before the execution of a command.
 
-5. even after closing brackets and opening it again these menu items will work.
+5. if Auto Save All on Build is Enabled (`Build -> Save All on Build <CTRL-F11>`) all open files will be saved before the execution of a build command.
 
 ## Supported Platforms
 
@@ -75,19 +78,18 @@ The extension has been tested on Windows 7, but should work on any platform or s
 
 ## Future Plans
 
-1. Add Build and Run menu item.
-2. Parse the output in panel to display line, massage, and file in which the error occured, and make it clickable (like in replace panel).
-3. Make editing configurations easier through a model dialog with add, edit and remove options.
-4. Show more info in status's title (errors and warnings counter -- related to second point).
-5. Add Automatic entry (based on opened file).
+1. Parse the output in panel to display line, massage, and file in which the error occured on click (like in replace panel).
+2. Make editing configurations easier through a modal dialog with add, edit and remove options.
+4. Add Automatic build based on the current open file.
+5. Add `Build and Run` menu entry.
 
-## Report Issues
+## Report Issues and Feature Requests
 
-Issues can be reported at [https://github.com/aymanizz/Brackets-Build-Systems/issues](https://github.com/aymanizz/Brackets-Build-System/issues)
+Issues and feature requests can be reported at [https://github.com/aymanizz/Brackets-Build-Systems/issues](https://github.com/aymanizz/Brackets-Build-Systems/issues)
 
 ## License
 
-MIT License. see [LICENSE](https://github.com/aymanizz/Brackets-Build-System/LICENSE) for more details.
+MIT License. see [LICENSE](https://github.com/aymanizz/Brackets-Build-Systems/LICENSE) for more details.
 
 ## Credits
 
