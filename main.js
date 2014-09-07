@@ -64,7 +64,9 @@ define(function (require, exports, module) {
 					+ " Output(s)");
 		
 		for (var i = 0; i < data_arr.length; i++) {
+			if (data_arr[i]) {
 				panel.appendOutput(data_arr[i]);
+			}
 		}
 	}
 
@@ -82,6 +84,7 @@ define(function (require, exports, module) {
 		"finished": function(event) {
 			if (!msgs) {
 				panel.updateStatus(ExtensionStrings.NO_OUTPUT);
+				$(panel.status).attr("title", "Build System Status: 0 Output(s)");
 				panel.appendOutput("No Output");
 			} else {
 				msgs = msgs.trimRight();
@@ -110,14 +113,18 @@ define(function (require, exports, module) {
 			
 			if (!lastEntry.cmd) {
 				CommandManager.get(ExtensionStrings.BUILD_ID).setEnabled(false);
+				$('.build', panel.panelElement).attr('disabled', 'true');
 			} else {
-				CommandManager.get(ExtensionStrings.BUILD_ID).setEnabled(true);				
+				CommandManager.get(ExtensionStrings.BUILD_ID).setEnabled(true);
+				$('.build', panel.panelElement).removeAttr('disabled');
 			}
 			
 			if (!lastEntry.Rcmd) {
 				CommandManager.get(ExtensionStrings.RUN_ID).setEnabled(false);
+				$('.run', panel.panelElement).attr('disabled', 'true');
 			} else {
-				CommandManager.get(ExtensionStrings.RUN_ID).setEnabled(true);				
+				CommandManager.get(ExtensionStrings.RUN_ID).setEnabled(true);
+				$('.run', panel.panelElement).removeAttr('disabled');
 			}
 			
 			if (!lastEntry.Dcmd) {

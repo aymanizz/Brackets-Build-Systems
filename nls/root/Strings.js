@@ -58,7 +58,6 @@ define({
     "PROGRESS"          :   "Progressing",
     // Complete status
     "NO_OUTPUT"         :   "Finished",
-    "WARNING"           :   "Warning",
     "ERROR"             :   "Error",
     
     // ID's

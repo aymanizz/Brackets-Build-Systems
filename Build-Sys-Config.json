@@ -1,5 +1,10 @@
 [
   {
+    "name": "Help",
+    "dir": "$FILE_PATH",
+    "cmd": "help"
+  },
+  {
     "name": "C++",
     "dir": "$FILE_PATH",
     "cmd": "g++ $FULL_FILE_NAME -o $FILE_PATH/$FILE_NAME",

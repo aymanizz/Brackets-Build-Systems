@@ -8,39 +8,31 @@
 }
 
 #brackets-build-sys-status.Inactive:hover {
-  background-color: rgba(0,0,0,0.03);
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 #brackets-build-sys-status.Finished {
-  background-color: rgb(145, 204, 65);
-}
-
-#brackets-build-sys-status.Finished:hover {
   background-color: rgba(145, 204, 65, 0.7);
 }
 
-#brackets-build-sys-status.Error {
-  background-color: rgb(247, 70, 135);
+#brackets-build-sys-status.Finished:hover {
+  background-color: rgba(145, 204, 65, 0.4);
 }
 
-#brackets-build-sys-status.Error:hover {
+#brackets-build-sys-status.Error {
   background-color: rgba(247, 70, 135, 0.7);
 }
 
-#brackets-build-sys-status.Warning {
-  background-color: rgb(227, 181, 81);
-}
-
-#brackets-build-sys-status.Warning:hover {
-  background-color: rgba(227, 181, 81, 0.7);
+#brackets-build-sys-status.Error:hover {
+  background-color: rgba(247, 70, 135, 0.4);
 }
 
 #brackets-build-sys-status.Progressing {
-  background-color: rgb(120, 178, 242);
+  background-color: rgba(120, 178, 242, 0.7);
 }
 
 #brackets-build-sys-status.Progressing:hover {
-  background-color: rgba(120, 178, 242, 0.7);
+  background-color: rgba(120, 178, 242, 0.4);
 }
 
 #brackets-build-sys-panel .tools {
@@ -49,18 +41,12 @@
   right: 50px;
 }
 
-.build-sys-output .line-text {
-/*
-  padding-left: 30px;
-  padding-right: 10px;
-  padding-top: 6px;
-  padding-bottom: 0;
-*/
-}
-
 .build-sys-output .build-sys-output-text {
-  margin: 0 5px 0 20px;
-  padding: 0 0;
+  margin: 0;
+  padding: 0 0 0 20px;
+  color: inherit;
   background-color: transparent;
-  border: none !important;
+  border: none;
+  /*border-left: 3px solid rgba(128, 128, 128, 0.6);*/
+  border-radius: 0;
 }

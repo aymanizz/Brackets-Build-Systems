@@ -10,4 +10,10 @@ v1.0.0 :
   - added save all on build
   - added seperator property
   - added $FILE_PATH special variable
-  - missing properties for entries, like run, will be disabled in menu
+  - build\run\debug menu items will be disabled if not specified (build\run\debug cmd)
+  
+v1.0.1 :
+
+  - minor code fixes
+  - improved theme support
+  - build\run buttons in toolbar will be disabled if not specified (build\run cmd)
