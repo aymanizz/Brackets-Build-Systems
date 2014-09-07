@@ -4,7 +4,7 @@
     "description": "Allows to execute commands via keyboard shortcuts & menu items - similar to sublime text's build system. Made possible thanks to Anton Ivanov the creator of Command Line Shortcuts Extension.",
     "keywords": ["build", "run", "command", "command-line", "system", "sublime", "programming language"],
     "homepage": "https://github.com/aymanizz/Brackets-Build-System",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": "Ayman Izzeldin <ayman.izzeldin@gmail.com> (https://github.com/aymanizz)",
     "contributors": [
     ],
