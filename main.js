@@ -26,23 +26,22 @@ define(function (require, exports, module) {
 	var ExtensionUtils 		= brackets.getModule("utils/ExtensionUtils"),
 		PreferencesManager 	= brackets.getModule("preferences/PreferencesManager"),
 		CommandManager 		= brackets.getModule("command/CommandManager"),
-		Menus				= brackets.getModule("command/Menus");
+		Menus			= brackets.getModule("command/Menus");
 
 	var InfoPanel 			= require("modules/InfoPanel").InfoPanel,
 		Configuration 		= require("modules/Configuration").Configuration,
-		RunManager 			= require("modules/RunManager").RunManager,
-		Util 				= require("modules/Util").Util,
+		RunManager 		= require("modules/RunManager").RunManager,
+		Util 			= require("modules/Util").Util,
 		CommandLine 		= require("modules/CommandLine").CommandLine,
 		ExtensionStrings 	= require("modules/Strings");
 
 	var preferences 		= PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS),
-		menu 				= Menus.getMenu(ExtensionStrings.MENU_ID),
-		lastEntry 			= preferences.get('lastEntry'),
-		panel 				= new InfoPanel(),
+		menu 			= Menus.getMenu(ExtensionStrings.MENU_ID),
+		panel 			= new InfoPanel(),
 		configuration 		= new Configuration(),
 		commandLine 		= new CommandLine(),
-		runManager	 		= new RunManager(panel),
-		msgs				= "";
+		runManager	 	= new RunManager(panel),
+		msgs			= "";
 	
 	preferences.definePreference('showPanel', 'boolean', false);
 	preferences.definePreference('lastEntry', 'object', []);
@@ -55,6 +54,8 @@ define(function (require, exports, module) {
 
 	panel.init();
 	commandLine.init();
+	
+	lastEntry = preferences.get('lastEntry');
 
 	function appendData(data) {
 		var data_arr = data.split(lastEntry.seperator ? lastEntry.seperator : /(?:\r\n|\n)/g);
