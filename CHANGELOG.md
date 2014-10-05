@@ -17,3 +17,7 @@ v1.0.1 :
   - minor code fixes
   - improved theme support
   - build\run buttons in toolbar will be disabled if not specified (build\run cmd)
+
+v1.0.2 :
+
+  - minor code fixes
