@@ -1,5 +1,5 @@
 # ***Brackets Build System Extension***
-- for brackets >=0.43, doesn't work on newer versions.
+- for brackets <=0.43, doesn't work on newer versions.
 
 Brackets IDE extension. Adds support of keyboard shortcuts and menu items for execution of terminal commands right from the IDE.
 
