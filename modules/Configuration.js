@@ -1,34 +1,34 @@
-/*  Configuration 
-	-*- all menu items added in this file except for build and run items 
-	-*- build-sys-config is processed in this file  
+/*  Configuration
+	-*- all menu items added in this file except for build and run items
+	-*- build-sys-config is processed in this file
 	*/
 define(function (require, exports, module) {
 
-	var DocumentManager 	= brackets.getModule("document/DocumentManager"),
-		Document 			= brackets.getModule("document/Document"),
-		FileUtils 			= brackets.getModule("file/FileUtils"),
-		ExtensionUtils 		= brackets.getModule("utils/ExtensionUtils"),
-		CommandManager 		= brackets.getModule("command/CommandManager"),
-		Menus 				= brackets.getModule("command/Menus"),
-		ProjectManager 		= brackets.getModule('project/ProjectManager'),
-		PreferencesManager 	= brackets.getModule('preferences/PreferencesManager'),
-		Dialogs 			= brackets.getModule("widgets/Dialogs");
+	var DocumentManager = brackets.getModule("document/DocumentManager"),
+		Document = brackets.getModule("document/Document"),
+		FileUtils = brackets.getModule("file/FileUtils"),
+		ExtensionUtils = brackets.getModule("utils/ExtensionUtils"),
+		CommandManager = brackets.getModule("command/CommandManager"),
+		Menus = brackets.getModule("command/Menus"),
+		ProjectManager = brackets.getModule('project/ProjectManager'),
+		PreferencesManager = brackets.getModule('preferences/PreferencesManager'),
+		Dialogs = brackets.getModule("widgets/Dialogs");
 
-	var Util 				= require("./Util").Util,
-		InfoPanel 			= require("./InfoPanel").InfoPanel,
-		ExtensionStrings 	= require("./Strings");
+	var Util = require("./Util").Util,
+		InfoPanel = require("./InfoPanel").InfoPanel,
+		ExtensionStrings = require("./Strings");
 
-	var menu 				= Menus.addMenu("Build", ExtensionStrings.MENU_ID, Menus.AFTER, Menus.AppMenuBar.NAVIGATE_MENU),
-		preferences 		= PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS);
+	var menu = Menus.addMenu("Build", ExtensionStrings.MENU_ID, Menus.AFTER, Menus.AppMenuBar.NAVIGATE_MENU),
+		preferences = PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS);
 
 	function Configuration() {
 	}
 
 	function _openConfigFile() {
 		console.log(module.uri);
-		
+
 		var src = module.uri.substr(0, module.uri.indexOf('/modules/Configuration.js') + 1) + 'build-sys-config.json';
-		
+
 		DocumentManager.getDocumentForPath(src).done(
 			function (doc) {
 				DocumentManager.setCurrentDocument(doc);
@@ -41,7 +41,7 @@ define(function (require, exports, module) {
 	function _toggleDebugMode ()
 	{
 		var debug = CommandManager.get(ExtensionStrings.DEBUG_MODE_ID);
-		var debugPref = preferences.get("debug");  
+		var debugPref = preferences.get("debug");
 
 		if (debugPref)
 		{
@@ -96,7 +96,7 @@ define(function (require, exports, module) {
 	CommandManager.register(ExtensionStrings.DEBUG_MODE, ExtensionStrings.DEBUG_MODE_ID, _toggleDebugMode);
 	CommandManager.register(ExtensionStrings.AUTO_CLEAR, ExtensionStrings.AUTO_CLEAR_ID, _toggleAutoClear);
 	CommandManager.register(ExtensionStrings.SAVE_ON_BUILD, ExtensionStrings.SAVE_ON_BUILD_ID, _toggleSaveOnBuild);
-	
+
 
 	if (preferences.get("debug"))
 	{

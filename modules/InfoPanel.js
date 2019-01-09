@@ -1,13 +1,13 @@
 /* All functions related to panel and status */
 define(function (require, exports) {
 
-	var PanelManager 		= brackets.getModule("view/PanelManager"),
-		CommandManager 		= brackets.getModule("command/CommandManager"),
-		PreferencesManager 	= brackets.getModule('preferences/PreferencesManager');
+	var PanelManager = brackets.getModule("view/PanelManager"),
+		CommandManager = brackets.getModule("command/CommandManager"),
+		PreferencesManager = brackets.getModule('preferences/PreferencesManager');
 
-	var ExtensionStrings 	= require("./Strings");
+	var ExtensionStrings = require("./Strings");
 
-	var preferences 		= PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS);
+	var preferences = PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS);
 
 	function InfoPanel() {
 		this.panelElement = null;
@@ -20,26 +20,26 @@ define(function (require, exports) {
 		var self = this;
 		var infoPanelHtml = require("text!../html/output-panel.html");
 		var debug = CommandManager.get(ExtensionStrings.DEBUG_ID);
-		
+
 		this.panelElement = $(infoPanelHtml);
 		this.panelContentElement = $('.table tbody', this.panelElement);
 
 		this.panel = PanelManager.createBottomPanel(
 			ExtensionStrings.PANEL_ID,
 			this.panelElement);
-		
+
 		$("#status-language").before('<div class="'
 			+ ExtensionStrings.INACTIVE
 			+ '" id="brackets-build-sys-status" title="Build System Status">'
 			+ ExtensionStrings.INACTIVE_MSG
 			+ '</div>');
-		
+
 		this.status = $('#brackets-build-sys-status');
-		
+
 		CommandManager.register(ExtensionStrings.SHOW_PANEL, ExtensionStrings.SHOW_PANEL_ID, function () {
 			self.toggle();
 		});
-		
+
 		$('.close', this.panelElement).on('click', function() {
 			self.hide();
 		});
@@ -59,11 +59,11 @@ define(function (require, exports) {
 		$('.clear', this.panelElement).on('click', function() {
 			self.clear();
 		});
-		
+
 		this.status.on('click', function () {
 			self.toggle();
 		});
-		
+
 	};
 
 	InfoPanel.prototype.show = function() {
@@ -79,7 +79,7 @@ define(function (require, exports) {
 		preferences.set('showPanel', false);
 		preferences.save();
 	};
-	
+
 	InfoPanel.prototype.toggle = function () {
 		var isShown = preferences.get('showPanel');
 
@@ -103,8 +103,8 @@ define(function (require, exports) {
 	InfoPanel.prototype.appendOutput = function(text) {
 		var currentHtml = $(this.panelContentElement).html();
 
-		$(this.panelContentElement).html(currentHtml 
-			+ "<tr style='display:table-row' class='build-sys-output'><td class='line-text'><pre class='build-sys-output-text'>" 
+		$(this.panelContentElement).html(currentHtml
+			+ "<tr style='display:table-row' class='build-sys-output'><td class='line-text'><pre class='build-sys-output-text'>"
 			+ text
 			+ "</pre><td></tr>");
 
@@ -118,7 +118,7 @@ define(function (require, exports) {
 	InfoPanel.prototype.setTitle = function(title) {
 		$('.title', this.panelElement).html(ExtensionStrings.EXTENSION_NAME + " — " + title);
 	};
-	
+
 	InfoPanel.prototype.updateStatus = function(status) {
 		this.status.attr("class", status);
 		if (status == "Inactive")

@@ -1,10 +1,10 @@
 define(function (require, exports, module) {
 
-	var NodeConnection 		= brackets.getModule("utils/NodeConnection"),
-		ExtensionUtils 		= brackets.getModule("utils/ExtensionUtils");
+	var NodeConnection = brackets.getModule("utils/NodeConnection"),
+		ExtensionUtils = brackets.getModule("utils/ExtensionUtils");
 
-	var domainName 			= "extension.commandline.node",
-		domainPath 			= ExtensionUtils.getModulePath(module) + "/node/run-command.js";
+	var domainName = "extension.commandline.node",
+		domainPath = ExtensionUtils.getModulePath(module) + "/node/run-command.js";
 
 	function listenOn(connection, handlers) {
 		for (var eventName in handlers) {

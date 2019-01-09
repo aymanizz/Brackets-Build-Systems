@@ -1,11 +1,11 @@
 define(function (require, exports, module) {
 
-	var PreferencesManager 	= brackets.getModule("preferences/PreferencesManager");
+	var PreferencesManager = brackets.getModule("preferences/PreferencesManager");
 
-	var ExtensionStrings 	= require("./Strings");
+	var ExtensionStrings = require("./Strings");
 
-	var PANEL_AUTOHIDE_TIMEOUT_MS 	= 500,
-		preferences 				= PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS);
+	var PANEL_AUTOHIDE_TIMEOUT_MS = 500,
+		preferences = PreferencesManager.getExtensionPrefs(ExtensionStrings.EXTENSION_PREFS);
 
 	function RunManager(panel) {
 		this.panel = panel;

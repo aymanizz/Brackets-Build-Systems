@@ -1,11 +1,11 @@
-var util 					= require('util'),
-	spawn 					= require('child_process').spawn;
+var util = require('util'),
+	spawn = require('child_process').spawn;
 
-var DOMAIN_NAME 			= "extension.commandline.node",
-	domainManager 			= null;
+var DOMAIN_NAME = "extension.commandline.node",
+	domainManager = null;
 
 function spawnProcess(dir, cmd) {
-	return (process.platform.toLowerCase().indexOf("win") >= 0) 
+	return (process.platform.toLowerCase().indexOf("win") >= 0)
 	? spawnWindowsProcess(dir, cmd)
 	: spawnLinuxProcess(dir, cmd);
 }
